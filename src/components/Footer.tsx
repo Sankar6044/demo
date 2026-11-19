@@ -60,6 +60,7 @@ export const Footer: React.FC = () => {
                                 <div className="flex flex-col">
                                     <span>+91 90800 39122</span>
                                     <span>+91 63747 76022</span>
+                                    <span>+91 97913 40123</span>
                                 </div>
                             </div>
 
