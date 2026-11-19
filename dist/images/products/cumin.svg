@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#fffbeb"/><stop offset="1" stop-color="#fef3c7"/></linearGradient>
+    <linearGradient id="seed" x2="1" y2="1"><stop stop-color="#c2924a"/><stop offset="1" stop-color="#75532c"/></linearGradient>
+  </defs>
+  <rect width="400" height="400" rx="32" fill="url(#bg)"/>
+  <ellipse cx="200" cy="272" rx="127" ry="87" fill="#b7793f"/>
+  <ellipse cx="200" cy="256" rx="126" ry="82" fill="#e8bd80"/>
+  <ellipse cx="200" cy="245" rx="101" ry="62" fill="#f3d9a8"/>
+  <g fill="url(#seed)" stroke="#765329" stroke-width="1">
+    <ellipse cx="151" cy="212" rx="7" ry="17" transform="rotate(-26 151 212)"/><ellipse cx="181" cy="203" rx="7" ry="17" transform="rotate(16 181 203)"/>
+    <ellipse cx="212" cy="218" rx="7" ry="17" transform="rotate(-10 212 218)"/><ellipse cx="243" cy="206" rx="7" ry="17" transform="rotate(28 243 206)"/>
+    <ellipse cx="267" cy="229" rx="7" ry="17" transform="rotate(-20 267 229)"/><ellipse cx="132" cy="242" rx="7" ry="17" transform="rotate(22 132 242)"/>
+    <ellipse cx="163" cy="244" rx="7" ry="17" transform="rotate(-12 163 244)"/><ellipse cx="194" cy="238" rx="7" ry="17" transform="rotate(31 194 238)"/>
+    <ellipse cx="226" cy="248" rx="7" ry="17" transform="rotate(-29 226 248)"/><ellipse cx="252" cy="260" rx="7" ry="17" transform="rotate(12 252 260)"/>
+    <ellipse cx="176" cy="274" rx="7" ry="17" transform="rotate(24 176 274)"/><ellipse cx="212" cy="275" rx="7" ry="17" transform="rotate(-16 212 275)"/>
+  </g>
+</svg>
