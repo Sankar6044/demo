@@ -50,7 +50,12 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onQualityClick }) =>
                 {/* Sky, Ship, Plane export image */}
                 <img
                     src="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?auto=format&fit=crop&w=2000&q=85"
+                    srcSet="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?auto=format&fit=crop&w=1200&q=85 1200w, https://images.unsplash.com/photo-1494412519320-aa613dfb7738?auto=format&fit=crop&w=2000&q=85 2000w"
+                    sizes="100vw"
                     alt="Global Agricultural Exports Background"
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
                     className="w-full h-full object-cover object-center opacity-85 mix-blend-overlay"
                 />
                 {/* Soft Blue Ocean Gradient overlay */}
@@ -134,7 +139,11 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onQualityClick }) =>
                             <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/30 backdrop-blur-sm bg-white/10 group">
                                 <img
                                     src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200&q=85"
+                                    srcSet="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=85 800w, https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200&q=85 1200w"
+                                    sizes="(min-width: 1024px) 50vw, 100vw"
                                     alt="Authentic Indian Spices in Wooden Bowls"
+                                    loading="lazy"
+                                    decoding="async"
                                     className="w-full h-[320px] sm:h-[380px] lg:h-[420px] object-cover transform group-hover:scale-105 transition-transform duration-700"
                                 />
 

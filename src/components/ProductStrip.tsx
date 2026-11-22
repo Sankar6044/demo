@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowUpRight, Cookie, Leaf, Wheat } from 'lucide-react';
+import { ProductImage } from './ProductImage';
 
 export type ProductCategory =
     | 'Fresh Vegetables'
@@ -418,10 +419,11 @@ export const ProductStrip: React.FC<ProductStripProps> = ({ onSelectProduct }) =
                                     className="block w-full text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-amber-300"
                                 >
                                     <div className="relative aspect-[4/3] overflow-hidden bg-amber-50">
-                                        <img
+                                        <ProductImage
                                             src={product.image}
                                             alt={product.name}
                                             loading="lazy"
+                                            sizes="(min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
                                             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                         />
                                         <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-1 text-[10px] font-black text-spizena-blue-900 shadow-sm">

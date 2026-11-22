@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, CheckCircle2, Package, Globe, ShieldCheck } from 'lucide-react';
 import { ProductItem } from './ProductStrip';
+import { ProductImage } from './ProductImage';
 
 interface ProductDetailModalProps {
     product: ProductItem | null;
@@ -30,11 +31,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
 
                     {/* Left: Product Image */}
-                    <div className="sm:col-span-5 bg-amber-50/60 p-4 rounded-2xl border border-amber-100/80 flex items-center justify-center">
-                        <img
+                    <div className="sm:col-span-5 bg-amber-50/60 p-4 rounded-2xl border border-amber-100/80 flex flex-col items-center justify-center group">
+                        <ProductImage
                             src={product.image}
                             alt={product.name}
-                            className="w-full h-48 sm:h-56 object-cover rounded-xl shadow-md"
+                            sizes="(min-width: 640px) 42vw, 100vw"
+                            loading="eager"
+                            className="w-full h-48 sm:h-56 object-cover rounded-xl shadow-md transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none"
                         />
                         {product.imageCredit && product.imageCreditUrl && product.imageLicense && product.imageLicenseUrl && (
                             <p className="mt-2 text-center text-[10px] leading-relaxed text-slate-500">

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Search, ArrowRight } from 'lucide-react';
 import { productsData, ProductItem } from './ProductStrip';
+import { ProductImage } from './ProductImage';
 
 interface SearchModalProps {
     isOpen: boolean;
@@ -61,10 +62,10 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
                                 className="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-amber-50/80 border border-slate-100 hover:border-amber-200 transition-all cursor-pointer group"
                             >
                                 <div className="flex items-center gap-3">
-                                    <img
+                                    <ProductImage
                                         src={prod.image}
                                         alt={prod.name}
-                                        className="w-12 h-12 rounded-lg object-cover"
+                                        className="w-12 h-12 rounded-lg object-cover transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
                                     />
                                     <div>
                                         <h4 className="text-sm font-bold text-slate-900 group-hover:text-spizena-orange-600">

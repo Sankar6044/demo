@@ -12,7 +12,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onKnowMoreClick }) =
             <div className="relative rounded-2xl overflow-hidden shadow-lg border-2 border-slate-100 group">
                 <img
                     src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1000&q=85"
+                    srcSet="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=85 600w, https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1000&q=85 1000w"
+                    sizes="(min-width: 640px) 50vw, 100vw"
                     alt="Fertile Farms of Tamil Nadu"
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 {/* Curved Green Graphic Treatment Overlay on Left Base */}
