@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Send, CheckCircle2 } from 'lucide-react';
+import { X, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import { productCategories, productsData } from './ProductStrip';
 
 interface QuoteModalProps {
@@ -7,40 +7,107 @@ interface QuoteModalProps {
     onClose: () => void;
 }
 
+const INITIAL_FORM_DATA = {
+    name: '',
+    email: '',
+    phone: '',
+    country: '',
+    product: 'Dry Red Chilli',
+    quantity: '',
+    message: '',
+};
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
     const [submitted, setSubmitted] = useState(false);
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        country: '',
-        product: 'Dry Red Chilli',
-        quantity: '',
-        message: '',
-    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [website, setWebsite] = useState('');
+    const [formData, setFormData] = useState(INITIAL_FORM_DATA);
 
     const handleClose = () => {
+        if (isSubmitting) return;
         setSubmitted(false);
+        setErrorMessage(null);
         onClose();
     };
 
     if (!isOpen) return null;
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const message = [
-            `Name: ${formData.name}`,
-            `Email: ${formData.email}`,
-            `Phone / WhatsApp: ${formData.phone}`,
-            `Destination country: ${formData.country}`,
-            `Product: ${formData.product}`,
-            `Estimated quantity: ${formData.quantity}`,
-            `Additional requirements: ${formData.message || 'None provided'}`,
-        ].join('\n');
-        const subject = encodeURIComponent(`Export inquiry - ${formData.product}`);
-        const body = encodeURIComponent(message);
-        window.location.href = `mailto:spizenaexports@gmail.com?subject=${subject}&body=${body}`;
-        setSubmitted(true);
+        if (isSubmitting) return;
+
+        const trimmed = {
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim(),
+            country: formData.country.trim(),
+            product: formData.product.trim(),
+            quantity: formData.quantity.trim(),
+            message: formData.message.trim(),
+        };
+
+        if (trimmed.name.length < 2) {
+            setErrorMessage('Please enter your name.');
+            return;
+        }
+        if (!EMAIL_REGEX.test(trimmed.email)) {
+            setErrorMessage('Please enter a valid email address.');
+            return;
+        }
+        if (trimmed.phone.length < 5 || !/\d/.test(trimmed.phone)) {
+            setErrorMessage('Please enter a valid phone or WhatsApp number.');
+            return;
+        }
+        if (trimmed.country.length < 2) {
+            setErrorMessage('Please enter your destination country.');
+            return;
+        }
+        if (!trimmed.product) {
+            setErrorMessage('Please select a product of interest.');
+            return;
+        }
+        if (!trimmed.quantity) {
+            setErrorMessage('Please enter the estimated quantity.');
+            return;
+        }
+
+        setIsSubmitting(true);
+        setErrorMessage(null);
+
+        try {
+            const response = await fetch('/api/send-enquiry', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...trimmed,
+                    website,
+                }),
+            });
+
+            const data = await response.json().catch(() => ({}));
+
+            if (!response.ok || !data?.success) {
+                setErrorMessage(
+                    data?.error || 'Unable to send your inquiry right now. Please try again.'
+                );
+                return;
+            }
+
+            setSubmitted(true);
+            setFormData(INITIAL_FORM_DATA);
+            setWebsite('');
+        } catch {
+            setErrorMessage(
+                'Network error while sending your inquiry. Please check your connection and try again.'
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -60,13 +127,23 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                         <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
                             <CheckCircle2 className="w-10 h-10" />
                         </div>
-                        <h3 className="text-2xl font-black text-slate-900">Your email draft is ready</h3>
+                        <h3 className="text-2xl font-black text-slate-900">Inquiry Sent Successfully</h3>
                         <p className="text-sm text-slate-600 max-w-md mx-auto">
-                            Your email app should open with the inquiry details. Review the message and send it to complete your request.
+                            Thank you for contacting SPIZENA EXPORTS. Your custom quote request has been delivered to our export team, and we will respond to you shortly.
                         </p>
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        <input
+                            type="text"
+                            name="website"
+                            value={website}
+                            onChange={(e) => setWebsite(e.target.value)}
+                            tabIndex={-1}
+                            autoComplete="off"
+                            aria-hidden="true"
+                            className="hidden"
+                        />
                         <div>
                             <span className="text-xs font-extrabold uppercase text-spizena-orange-500 tracking-wider">
                                 Direct Export Inquiry
@@ -175,12 +252,31 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                             />
                         </div>
 
+                        {errorMessage && (
+                            <div
+                                role="alert"
+                                className="rounded-xl bg-red-50 border border-red-200 px-3.5 py-2.5 text-xs font-medium text-red-700"
+                            >
+                                {errorMessage}
+                            </div>
+                        )}
+
                         <button
                             type="submit"
-                            className="w-full bg-gradient-to-r from-spizena-orange-500 to-spizena-orange-600 text-white font-bold py-3.5 rounded-2xl shadow-lg hover:shadow-hero-btn transition-all duration-300 flex items-center justify-center gap-2"
+                            disabled={isSubmitting}
+                            className="w-full bg-gradient-to-r from-spizena-orange-500 to-spizena-orange-600 text-white font-bold py-3.5 rounded-2xl shadow-lg hover:shadow-hero-btn transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
-                            <Send className="w-4 h-4" />
-                            <span>Submit Inquiry Now</span>
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    <span>Sending Inquiry...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Send className="w-4 h-4" />
+                                    <span>Submit Inquiry Now</span>
+                                </>
+                            )}
                         </button>
                     </form>
                 )}
